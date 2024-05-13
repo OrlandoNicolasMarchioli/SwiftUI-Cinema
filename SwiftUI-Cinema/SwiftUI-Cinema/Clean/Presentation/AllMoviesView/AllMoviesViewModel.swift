@@ -39,7 +39,6 @@ class AllMoviesViewModel: ObservableObject{
                   receiveValue: {
                 movies in DispatchQueue.main.async{
                     self.state = self.state.clone(withMoviesNowPlaying: movies)
-                    print(self.state)
                 }
             })
             .store(in: &cancellables)

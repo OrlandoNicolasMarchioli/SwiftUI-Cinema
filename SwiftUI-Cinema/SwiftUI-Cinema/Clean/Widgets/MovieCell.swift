@@ -42,10 +42,13 @@ struct MovieCellChip<T>: View {
                     switch phase {
                     case .empty:
                         ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                            .scaleEffect(2.0, anchor: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                     case .success(let image):
                         image
                             .resizable()
-                            .scaledToFill()
+                            .scaledToFit()
+                            .frame(maxHeight: 700)
                             .cornerRadius(8)
                     case .failure:
                         SpinnerView()
@@ -58,8 +61,8 @@ struct MovieCellChip<T>: View {
             Text(getMovieName(item))
                 .foregroundColor(Color("MovieTitle"))
                 .frame(height: 50)
-                .font(.headline)
-                .padding(.top, 3)
+                .font(.title2)
+                .padding(.bottom,20)
         }
     }
 }
@@ -73,5 +76,5 @@ private func convertToSecureURL(_ urlString: String) -> String {
 }
 
 #Preview{
-    MovieCellChip<SelectedMovieData>(item: SelectedMovieData(imageUrl: "https://placekitten.com/200/300", movieName: "Kitten Fight"), getMovieImageUrl: {item in return item.imageUrl}, getMovieName: {item in return item.movieName}, onChipTapped: {} )
+    MovieCellChip<SelectedMovieData>(item: SelectedMovieData(movieName: "Kitten Fight", imageUrl: "https://placekitten.com/200/300"), getMovieImageUrl: {item in return item.imageUrl}, getMovieName: {item in return item.movieName}, onChipTapped: {} )
 }

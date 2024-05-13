@@ -13,16 +13,25 @@ struct AllMoviesView: View {
     
     var body: some View {
         ZStack{
-            Grid(alignment: .center,horizontalSpacing: 16, verticalSpacing: 16){
-                ForEach(allMoviesViewModel.state.moviesNowPlaying){ movie in
-                    MovieCellChip<MovieResult>(item: movie,
-                                               getMovieImageUrl: {item in (imageBaseURL + (item.posterPath ?? "") )},
-                                              getMovieName: {item in item.title },
-                                            onChipTapped: {
-                        
-                    })
+            
+            VStack(alignment: .center){
+                Text("Premieres")
+                    .foregroundColor(Color("MovieTitle"))
+                    .frame(height: 50)
+                    .font(.title)
+                    .bold()
+                Grid(alignment: .center,horizontalSpacing: 16, verticalSpacing: 16){
+                    ForEach(allMoviesViewModel.state.moviesNowPlaying){ movie in
+                        MovieCellChip<MovieResult>(item: movie,
+                                                   getMovieImageUrl: {item in (imageBaseURL + (item.posterPath ?? "") )},
+                                                   getMovieName: {item in item.title },
+                                                   onChipTapped: {
+                            
+                        })
+                    }
                 }
             }
+            .background(Color.black)
         }.onAppear(){
             allMoviesViewModel.fetchAllMoviesData()
         }
