@@ -11,7 +11,7 @@ import SwiftUI
 struct SwiftUI_CinemaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
     }
 }
