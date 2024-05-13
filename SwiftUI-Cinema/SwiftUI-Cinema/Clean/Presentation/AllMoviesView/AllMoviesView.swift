@@ -31,7 +31,6 @@ struct AllMoviesView: View {
                     }
                 }
             }
-            .background(Color.black)
         }.onAppear(){
             allMoviesViewModel.fetchAllMoviesData()
         }

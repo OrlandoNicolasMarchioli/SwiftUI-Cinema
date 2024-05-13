@@ -77,4 +77,6 @@ private func convertToSecureURL(_ urlString: String) -> String {
 
 #Preview{
     MovieCellChip<SelectedMovieData>(item: SelectedMovieData(movieName: "Kitten Fight", imageUrl: "https://placekitten.com/200/300"), getMovieImageUrl: {item in return item.imageUrl}, getMovieName: {item in return item.movieName}, onChipTapped: {} )
+    
+    
 }
