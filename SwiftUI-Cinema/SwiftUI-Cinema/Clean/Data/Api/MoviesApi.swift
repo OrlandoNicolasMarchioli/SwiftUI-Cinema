@@ -9,16 +9,12 @@ import Foundation
 
 protocol MoviesApiProtocol{
     func getAllNowPlayingMovies(completion: @escaping (FetchMoviesResponse?, Error?) -> Void)
-    func getAllMovies(completion: @escaping ([Movie]?, Error?) -> Void)
-    
 }
 
 class MoviesApi: MoviesApiProtocol{
     
     static private var shared: MoviesApi?
     private var movies: [MovieResult] = []
-    private var moviesWithCorrectImages: [Movie] = []
-    private var movieTitles: [String] = []
     private var urlSession: URLSession
     private var baseUrl: String
     private var getBaseUrl: String
@@ -60,36 +56,9 @@ class MoviesApi: MoviesApiProtocol{
         }
         
         performDataTask(urlRequest: urlRequest , completion: completion, decodingType: FetchMoviesResponse.self, extractResponse: extractMoviesFromResponse(response: ))
-    }
-    
-    
-    func getMovieByTitle(completion: @escaping (Movie?, Error?) -> Void, movieTitle: String){
-        guard let urlRequest = absoluteURLFactory(host: getBaseUrl,
-                                                  path: "",
-                                                  authorization: "",
-                                                  accept: "",
-                                                  apiKey: apiKey,
-                                                  param: movieTitle ) else{
-            print("Invalid Url")
-            return
-        }
-        
-        performDataTask(urlRequest: urlRequest, completion: completion, decodingType: Movie.self, extractResponse: extractMovie(response: ))
-    }
-    
-    func getAllMovies(completion: @escaping ([Movie]?, Error?) -> Void){
-        for title in movieTitles {
-            getMovieByTitle(completion: { movie, error in
-                if let movie = movie {
-                    print("Retrieved movie: \(movie)")
-                } else if let error = error {
-                    print("Error retrieving movie: \(error.localizedDescription)")
-                }
-            }, movieTitle: title)
-        }
+
     }
 
-    
     private func performDataTask<T: Decodable>(urlRequest: URLRequest, completion: @escaping (T?, Error?) -> Void, decodingType: T.Type, extractResponse: @escaping (T) -> Void) {
          
         urlSession.dataTask(with: urlRequest) { data, _, error in
@@ -120,7 +89,7 @@ class MoviesApi: MoviesApiProtocol{
     private func absoluteURLFactory(host: String, path: String, authorization: String, accept: String, apiKey: String, param: String) -> URLRequest?{
       var hostUrl = URL(string: host)
       hostUrl?.append(path: path)
-      hostUrl?.append(queryItems: [URLQueryItem(name: "t", value: param)])
+    hostUrl?.append(queryItems: [URLQueryItem(name: "t", value: param)])
       hostUrl?.append(queryItems: [URLQueryItem(name: "apikey", value: apiKey)])
       var urlRequest = URLRequest(url: hostUrl ?? URL(fileURLWithPath: ""))
       urlRequest.httpMethod = "GET"
@@ -131,14 +100,6 @@ class MoviesApi: MoviesApiProtocol{
     
     private func extractMoviesFromResponse(response: FetchMoviesResponse) -> Void{
         self.movies = response.results
-        extractMoviesName(movies: self.movies)
     }
     
-    private func extractMoviesName(movies: [MovieResult]) -> Void{
-        self.movieTitles = movies.map{$0.title}
-    }
-    
-    private func extractMovie(response: Movie) -> Void{
-        self.moviesWithCorrectImages.append(response)
-    }
 }

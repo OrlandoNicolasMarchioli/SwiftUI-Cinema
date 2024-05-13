@@ -9,14 +9,14 @@ import SwiftUI
 
 struct AllMoviesView: View {
     @ObservedObject var allMoviesViewModel = AllMoviesViewModel( moviesFetchUseCase: DefaultMovieFetchUseCase(allMoviesRepository: MoviesApiFetch(moviesApi: MoviesApi.getInstance())))
-    @State var movies:  [Movie] = []
+    let imageBaseURL: String = ProcessInfo.processInfo.environment["baseImageUrl"] ?? ""
     
     var body: some View {
         ZStack{
             Grid(alignment: .center,horizontalSpacing: 16, verticalSpacing: 16){
-                ForEach(allMoviesViewModel.state.movies){ movie in
-                    MovieCellChip<Movie>(item: movie,
-                                         getMovieImageUrl: {item in (item.poster )},
+                ForEach(allMoviesViewModel.state.moviesNowPlaying){ movie in
+                    MovieCellChip<MovieResult>(item: movie,
+                                               getMovieImageUrl: {item in (imageBaseURL + (item.posterPath ?? "") )},
                                               getMovieName: {item in item.title },
                                             onChipTapped: {
                         

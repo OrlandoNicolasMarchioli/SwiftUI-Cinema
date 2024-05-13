@@ -10,7 +10,6 @@ import Combine
 
 protocol MoviesFetchUseCase{
     func getNowPlayingMovies() -> AnyPublisher<[MovieResult], Error>
-    func getMovies() -> AnyPublisher<[Movie], Error>
 }
 
 
@@ -30,15 +29,5 @@ class DefaultMovieFetchUseCase: MoviesFetchUseCase{
         }
         .eraseToAnyPublisher()
     }
-    
-    func getMovies() -> AnyPublisher<[Movie], Error> {
-        return allMoviesRepository.fetchAllMovies().map{result in
-            return result
-        }.mapError{err in
-            return err
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    
+
 }

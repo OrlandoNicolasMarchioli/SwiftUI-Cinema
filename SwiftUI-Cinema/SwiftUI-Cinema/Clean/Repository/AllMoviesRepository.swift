@@ -10,7 +10,6 @@ import Combine
 
 protocol AllMoviesRepository{
     func fetchNowPlayingMovies() -> AnyPublisher<[MovieResult],Error>
-    func fetchAllMovies() -> AnyPublisher<[Movie],Error>
 }
 
 class MoviesApiFetch: AllMoviesRepository{
@@ -28,19 +27,6 @@ class MoviesApiFetch: AllMoviesRepository{
                     return
                 }
                 promise(.success(response.results))
-            }
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    func fetchAllMovies() -> AnyPublisher<[Movie], Error> {
-        return Future<[Movie], Error>{ promise in
-            self.moviesApi.getAllMovies(){ (response, err) in
-                guard let response = response, err == nil else{
-                    promise(.failure(MovieStateResponseError.failure))
-                    return
-                }
-                promise(.success(response))
             }
         }
         .eraseToAnyPublisher()

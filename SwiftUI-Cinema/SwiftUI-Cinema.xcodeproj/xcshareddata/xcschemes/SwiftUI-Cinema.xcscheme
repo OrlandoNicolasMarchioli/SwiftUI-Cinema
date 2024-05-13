@@ -95,8 +95,8 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "getBaseUrl"
-            value = "http://www.omdbapi.com"
+            key = "baseImageUrl"
+            value = "https://image.tmdb.org/t/p/w500"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
