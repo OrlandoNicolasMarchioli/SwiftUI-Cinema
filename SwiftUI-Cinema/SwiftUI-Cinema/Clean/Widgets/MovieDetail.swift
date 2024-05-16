@@ -1,17 +1,18 @@
 //
-//  MovieCell.swift
+//  MovieDetail.swift
 //  SwiftUI-Cinema
 //
-//  Created by Orlando Nicolas Marchioli on 07/05/2024.
+//  Created by Orlando Nicolas Marchioli on 13/05/2024.
 //
 
 import Foundation
 import SwiftUI
 
-struct MovieCell<T>: View {
-    @State var movie: Character
+struct MovieDetail<T> {
     
-    init(movie: Character) {
+    @State var movie: Movie
+    
+    init(movie: Movie) {
         self.movie = movie
     }
     
@@ -20,12 +21,16 @@ struct MovieCell<T>: View {
             
         }.padding(.bottom)
     }
+    
 }
 
-struct MovieCellChip<T>: View {
+struct SingleMovieCellChip<T>: View {
     let item: T
     let getMovieImageUrl: ((T) -> String)
-    let getMovieName: ((T) -> String)
+    let getMovieGenre: ((T) -> String)
+    let getMovieDuration: ((T) -> String)
+    let getMovieActors: ((T) -> String)
+    let getMovieDirector: ((T) -> String)
     let onChipTapped: (() -> Void)
     let imageNotAvailable: Constants.NotAvailable = .notAvailable
     
@@ -58,12 +63,21 @@ struct MovieCellChip<T>: View {
                 }
                 .padding()
             }
-            Text(getMovieName(item))
-                .foregroundColor(Color("MovieTitle"))
-                .bold()
-                .frame(height: 50)
-                .font(.title2)
-                .padding(.bottom,20)
+            VStack(alignment: .leading) {
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Genre: ", value: getMovieGenre(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
+                }
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Duration: ", value: getMovieDuration(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
+                }
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Actors: ", value: getMovieActors(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
+                }
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Director: ", value: getMovieDirector(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
+                }
+            }
+            
         }
     }
 }
@@ -75,9 +89,7 @@ private func convertToSecureURL(_ urlString: String) -> String {
     }
     return secureURLString
 }
-
+  
 #Preview{
-    MovieCellChip<SelectedMovieData>(item: SelectedMovieData(movieName: "Kitten Fight", imageUrl: "https://placekitten.com/200/300"), getMovieImageUrl: {item in return item.imageUrl}, getMovieName: {item in return item.movieName}, onChipTapped: {} )
-    
-    
+    SingleMovieCellChip<SelectedMovie>(item: SelectedMovie(image : "https://placekitten.com/200/300",genre: "Acction", runtime: "94 min", actors: "great kitty", director: "Stephen Hawking"), getMovieImageUrl: {item in return item.image}, getMovieGenre: {item in return item.genre}, getMovieDuration: {item in return item.runtime}, getMovieActors: {item in return item.actors}, getMovieDirector: {item in return item.director}, onChipTapped: {} )
 }

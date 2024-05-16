@@ -9,12 +9,14 @@ import Foundation
 
 protocol MoviesApiProtocol{
     func getAllNowPlayingMovies(completion: @escaping (FetchMoviesResponse?, Error?) -> Void)
+    func getMovieByTitle(title: String, completion: @escaping (Movie?, Error?) -> Void)
 }
 
 class MoviesApi: MoviesApiProtocol{
     
     static private var shared: MoviesApi?
     private var movies: [MovieResult] = []
+    private var moviesFetchedByTitle: [Movie] = []
     private var urlSession: URLSession
     private var baseUrl: String
     private var getBaseUrl: String
@@ -37,7 +39,7 @@ class MoviesApi: MoviesApiProtocol{
         }else{
             let newInstance =
                 MoviesApi(baseUrl: ProcessInfo.processInfo.environment["baseUrl"] ?? "", 
-                          getBaseUrl: ProcessInfo.processInfo.environment["getBaseUrl"] ?? "",
+                          getBaseUrl: ProcessInfo.processInfo.environment["getByBaseUrl"] ?? "",
                           apiKey: ProcessInfo.processInfo.environment["apikey"] ?? "",
                           authorization: ProcessInfo.processInfo.environment["authorization"] ?? "",
                           accept: ProcessInfo.processInfo.environment["accept"] ?? "")
@@ -57,6 +59,17 @@ class MoviesApi: MoviesApiProtocol{
         
         performDataTask(urlRequest: urlRequest , completion: completion, decodingType: FetchMoviesResponse.self, extractResponse: extractMoviesFromResponse(response: ))
 
+    }
+    
+    func getMovieByTitle(title: String, completion: @escaping (Movie?, Error?) -> Void) {
+        guard let urlRequest = absoluteURLFactory(host: getBaseUrl,
+                                                  path: "",
+                                                  authorization: "",
+                                                  accept: "", apiKey: apiKey, param: title) else{
+            print("Invalid Url")
+            return
+        }
+        performDataTask(urlRequest: urlRequest , completion: completion, decodingType: Movie.self, extractResponse: extractMovieFromResponse(response: ))
     }
 
     private func performDataTask<T: Decodable>(urlRequest: URLRequest, completion: @escaping (T?, Error?) -> Void, decodingType: T.Type, extractResponse: @escaping (T) -> Void) {
@@ -100,6 +113,10 @@ class MoviesApi: MoviesApiProtocol{
     
     private func extractMoviesFromResponse(response: FetchMoviesResponse) -> Void{
         self.movies = response.results
+    }
+    
+    private func extractMovieFromResponse(response: Movie) -> Void{
+        self.moviesFetchedByTitle.append(response)
     }
     
 }

@@ -8,11 +8,30 @@
 import SwiftUI
 
 struct MovieDetailView: View {
+    @ObservedObject var movieDetailViewModel = MovileDetailViewModel( defaultMovieFetchUseCase: DefaultMovieFetchUseCase(allMoviesRepository: MoviesApiFetch(moviesApi: MoviesApi.getInstance())))
+    @State  var title: String
+    
+    init(title: String) {
+        self.title = title
+    }
+    
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack{
+            VStack{
+                SingleMovieCellChip<Movie>(item: movieDetailViewModel.state.movie,
+                                           getMovieImageUrl: {item in (  (item.poster ) )},
+                                                   getMovieGenre: {item in item.genre}, getMovieDuration: {item in item.runtime }, getMovieActors: {item in item.actors}, getMovieDirector: {item in item.director},
+                                           onChipTapped: {
+                    
+                })
+            }
+        }.onAppear(){
+            movieDetailViewModel.getMovieByTitle(title: title)
+        }
     }
 }
 
 #Preview {
-    MovieDetailView()
+    MovieDetailView(title: "")
 }
