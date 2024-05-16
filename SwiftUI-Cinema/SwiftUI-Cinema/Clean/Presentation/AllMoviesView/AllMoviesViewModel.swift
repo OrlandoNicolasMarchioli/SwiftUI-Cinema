@@ -10,7 +10,7 @@ import Combine
 
 class AllMoviesViewModel: ObservableObject{
     @Published var state: AllMoviesState
-    static let defaultState = AllMoviesState(moviesNowPlaying: [], errorMessage: "", message: "", hasError: false)
+    static let defaultState = AllMoviesState(moviesNowPlaying: [], errorMessage: "", message: "", hasError: false, noMoviesFound: false)
     private let moviesFetchUseCase: DefaultMovieFetchUseCase
     private var cancellables: Set<AnyCancellable> = []
     
@@ -50,6 +50,20 @@ class AllMoviesViewModel: ObservableObject{
         self.state = self.state.clone(withMoviesNowPlaying:
                                         self.state.moviesNowPlaying
                                         .filter{ $0.title != ProcessInfo.processInfo.environment["movieWithoutInfo"]})
+    }
+    
+    func searchMovies(title: String) -> Void{
+        if (title.isEmpty){
+            fetchNowPlayingMovies()
+        }
+        
+        let filteredMovies = self.state.moviesNowPlaying.filter{ $0.title.contains(title)}
+        
+        guard !filteredMovies.isEmpty else{
+            self.state  = self.state.clone(withNoMoviesFound: true)
+            return
+        }
+        self.state = self.state.clone(withMoviesNowPlaying: filteredMovies)
     }
     
 }
