@@ -13,8 +13,9 @@ struct AllMoviesState{
     let errorMessage: String
     let message: String
     let hasError: Bool
+    let noMoviesFound: Bool
     
-    func clone(withMoviesNowPlaying: [MovieResult]? = nil, withErrorMessage: String? = nil, withMessage: String? = nil, withHasError: Bool? = false) -> AllMoviesState{
-        return  AllMoviesState(moviesNowPlaying: withMoviesNowPlaying ?? self.moviesNowPlaying,errorMessage: withErrorMessage ?? self.errorMessage, message: withMessage ?? self.message, hasError: withHasError ?? self.hasError)
+    func clone(withMoviesNowPlaying: [MovieResult]? = nil, withErrorMessage: String? = nil, withMessage: String? = nil, withHasError: Bool? = false, withNoMoviesFound: Bool? = false) -> AllMoviesState{
+        return  AllMoviesState(moviesNowPlaying: withMoviesNowPlaying ?? self.moviesNowPlaying,errorMessage: withErrorMessage ?? self.errorMessage, message: withMessage ?? self.message, hasError: withHasError ?? self.hasError, noMoviesFound: withNoMoviesFound ?? self.noMoviesFound)
     }
 }
