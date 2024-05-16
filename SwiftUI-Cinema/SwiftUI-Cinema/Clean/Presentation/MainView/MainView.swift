@@ -10,14 +10,17 @@ import SwiftUI
 struct MainView: View {
     var body: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .center){
-                ScrollView{
-                    VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/){
+            ZStack(alignment: .center) {
+                Color.black.ignoresSafeArea()
+
+                ScrollView {
+                    VStack {
                         AllMoviesView()
+                            .frame(maxWidth: .infinity)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(minHeight: geometry.size.height)
                 }
-            }.background(Color.black)
+            }
         }
     }
 }

@@ -64,37 +64,17 @@ struct SingleMovieCellChip<T>: View {
                 .padding()
             }
             VStack(alignment: .leading) {
-                HStack{
-                    Text("Genre: ")
-                    Text(getMovieGenre(item))
-                        .foregroundColor(Color("MovieTitle"))
-                        .frame(height: 50)
-                        .font(.title2)
-                        .padding(.bottom,20)
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Genre: ", value: getMovieGenre(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
                 }
-                HStack{
-                    Text("Duration: ")
-                    Text(getMovieDuration(item))
-                        .foregroundColor(Color("MovieTitle"))
-                        .frame(height: 50)
-                        .font(.title2)
-                        .padding(.bottom,20)
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Duration: ", value: getMovieDuration(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
                 }
-                HStack{
-                    Text("Actors: ")
-                    Text(getMovieActors(item))
-                        .foregroundColor(Color("MovieTitle"))
-                        .frame(height: 50)
-                        .font(.title2)
-                        .padding(.bottom,20)
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Actors: ", value: getMovieActors(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
                 }
-                HStack{
-                    Text("Director: ")
-                    Text(getMovieDirector(item))
-                        .foregroundColor(Color("MovieTitle"))
-                        .frame(height: 50)
-                        .font(.title2)
-                        .padding(.bottom,20)
+                HStack(alignment: .firstTextBaseline){
+                    MovieInfoRowView(label: "Director: ", value: getMovieDirector(item), labelColor: Color("GrayMovieTitle"), valueColor: Color("MovieTitle"))
                 }
             }
             

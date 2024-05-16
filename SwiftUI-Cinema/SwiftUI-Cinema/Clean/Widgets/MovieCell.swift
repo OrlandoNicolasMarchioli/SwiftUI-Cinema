@@ -60,6 +60,7 @@ struct MovieCellChip<T>: View {
             }
             Text(getMovieName(item))
                 .foregroundColor(Color("MovieTitle"))
+                .bold()
                 .frame(height: 50)
                 .font(.title2)
                 .padding(.bottom,20)

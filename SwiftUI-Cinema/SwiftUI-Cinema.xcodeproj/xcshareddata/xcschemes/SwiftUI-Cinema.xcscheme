@@ -99,6 +99,16 @@
             value = "https://image.tmdb.org/t/p/w500"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "getByBaseUrl"
+            value = "https://www.omdbapi.com"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "movieWithoutInfo"
+            value = "Un p&#xe8;re id&#xe9;al"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
