@@ -44,6 +44,7 @@ class AllMoviesViewModel: ObservableObject{
             .store(in: &cancellables)
     }
     
+    // TODO: Implement a better way to do this filtering
     //This function cleans the response, because exists one movie with movie detail response (Directors, Actors, Time, etc)
     func cleanResponse() -> Void{
         self.state = self.state.clone(withMoviesNowPlaying:
