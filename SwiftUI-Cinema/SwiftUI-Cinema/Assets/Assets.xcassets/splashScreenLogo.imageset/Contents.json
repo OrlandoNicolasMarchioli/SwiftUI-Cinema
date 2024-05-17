@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "hoytsLogo.svg",
+      "filename" : "hoyts.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "hoytsLogo 1.svg",
+      "filename" : "hoyts 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "hoytsLogo 2.svg",
+      "filename" : "hoyts 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

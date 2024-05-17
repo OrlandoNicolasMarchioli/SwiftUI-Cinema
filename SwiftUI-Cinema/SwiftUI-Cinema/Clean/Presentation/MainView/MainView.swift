@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainView: View {
+    @ObservedObject var mainViewModel = MainViewModel()
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .center) {

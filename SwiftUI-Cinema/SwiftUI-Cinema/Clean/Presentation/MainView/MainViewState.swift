@@ -8,8 +8,10 @@
 import Foundation
 
 struct MainViewState{
-    let onSplashScreen: Bool
+    let userMode: NavigationMode
     let onAllMoviesview: Bool
     
-
+    func clone (withUserMode: NavigationMode? = nil, withOnAllMoviesview: Bool? = nil) -> MainViewState{
+        return MainViewState(userMode: withUserMode ?? self.userMode, onAllMoviesview: withOnAllMoviesview ?? self.onAllMoviesview)
+    }
 }

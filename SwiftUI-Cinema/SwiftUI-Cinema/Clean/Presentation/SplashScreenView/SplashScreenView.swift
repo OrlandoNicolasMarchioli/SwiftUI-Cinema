@@ -12,6 +12,8 @@ struct SplashScreenView: View {
         ZStack{
             VStack{
                 Image("splashScreenLogo")
+                    .resizable()
+                    .frame(maxWidth: 350,maxHeight: 250)
             }
         }
     }
