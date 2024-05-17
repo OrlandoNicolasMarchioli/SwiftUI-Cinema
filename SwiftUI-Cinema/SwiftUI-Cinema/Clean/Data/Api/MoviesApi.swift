@@ -37,6 +37,7 @@ class MoviesApi: MoviesApiProtocol{
         if let returnShared = shared{
             return shared ?? returnShared
         }else{
+            // TODO: Do constructor networking outside class
             let newInstance =
                 MoviesApi(baseUrl: ProcessInfo.processInfo.environment["baseUrl"] ?? "", 
                           getBaseUrl: ProcessInfo.processInfo.environment["getByBaseUrl"] ?? "",
