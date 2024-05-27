@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MovieDetailView: View {
-    @ObservedObject var movieDetailViewModel = MovileDetailViewModel( defaultMovieFetchUseCase: DefaultMovieFetchUseCase(allMoviesRepository: MoviesApiFetch(moviesApi: MoviesApi.getInstance())))
+    @ObservedObject var movieDetailViewModel = MovileDetailViewModel( defaultMovieFetchUseCase: DefaultMovieFetchUseCase(allMoviesRepository: MoviesApiFetch(moviesApi: MoviesApi.getInstance(), movieStoreManager: MoviesStoreManager())))
     @State  var title: String
     
     init(title: String) {
