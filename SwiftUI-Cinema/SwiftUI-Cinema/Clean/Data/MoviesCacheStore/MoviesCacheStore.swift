@@ -8,33 +8,29 @@
 import Foundation
 import CoreData
 
-class MoviesStoreManager{
-    static private var shared: MoviesStoreManager?
-    var state: MovieStoreManagerState
-    static var defaultState = MovieStoreManagerState(allMoviesNowPlayingFetched: [], moviesFetchedByTitle: [])
+class MoviesCacheStore{
+    static private var shared: MoviesCacheStore?
+    private var allMoviesNowPlayingFetched: [MovieResult] = []
+    private var moviesFetchedByTitle: [Movie] = []
     
-    init(initialState: MovieStoreManagerState = defaultState) {
-        self.state = initialState
-    }
     
-    static func getInstance() -> MoviesStoreManager{
+    static func getInstance() -> MoviesCacheStore{
         if let returnShared = shared{
             return shared ?? returnShared
         }else{
-            // TODO: Do constructor networking outside class
             let newInstance =
-            MoviesStoreManager()
+            MoviesCacheStore()
             shared = newInstance
             return shared ?? newInstance
         }
     }
     
     func hasAllNowPlayingMovies() -> Bool {
-        return !self.state.allMoviesNowPlayingFetched.isEmpty
+        return !self.allMoviesNowPlayingFetched.isEmpty
     }
     
     func hasTheMovieDetail(movieTitle: String) -> Bool{
-        for movie in self.state.moviesFetchedByTitle{
+        for movie in self.moviesFetchedByTitle{
             if(movie.title.contains(movieTitle)){
                 return true
             }
@@ -43,7 +39,7 @@ class MoviesStoreManager{
     }
     
     func getMoviesNowPlayingStored() -> [MovieResult]{
-        return self.state.allMoviesNowPlayingFetched
+        return self.allMoviesNowPlayingFetched
     }
     
     func getMovieStored(title: String) -> Movie?{
@@ -51,11 +47,19 @@ class MoviesStoreManager{
     }
     
     func getMoviesByTitleStored() -> [Movie]{
-        return self.state.moviesFetchedByTitle
+        return self.moviesFetchedByTitle
     }
     
     private func searchMovieByTitle(title: String) -> Movie?{
-        let filteredMovies = self.state.moviesFetchedByTitle.filter{ $0.title == title}
+        let filteredMovies = self.moviesFetchedByTitle.filter{ $0.title == title}
         return filteredMovies.first
+    }
+    
+    func saveMovies(movies: [MovieResult]) -> Void {
+        self.allMoviesNowPlayingFetched = movies
+    }
+    
+    func saveMovie(movie: Movie) -> Void{
+        self.moviesFetchedByTitle.append(movie)
     }
 }

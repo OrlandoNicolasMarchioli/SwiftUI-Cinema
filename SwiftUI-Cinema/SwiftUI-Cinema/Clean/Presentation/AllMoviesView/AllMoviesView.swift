@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AllMoviesView: View {
-    @ObservedObject var allMoviesViewModel = AllMoviesViewModel(moviesFetchUseCase: DefaultMovieFetchUseCase(allMoviesRepository: MoviesApiFetch(moviesApi: MoviesApi.getInstance(), movieStoreManager: MoviesStoreManager())))
+    @ObservedObject var allMoviesViewModel = AllMoviesViewModel(moviesFetchUseCase: DefaultMovieFetchUseCase(allMoviesRepository: MoviesApiFetch(moviesApi: MoviesApi.getInstance(), movieStoreManager: MoviesCacheStore.getInstance()
+                                                                                    )))
     let imageBaseURL: String = ProcessInfo.processInfo.environment["baseImageUrl"] ?? ""
     @State var filterName: String = ""
     
