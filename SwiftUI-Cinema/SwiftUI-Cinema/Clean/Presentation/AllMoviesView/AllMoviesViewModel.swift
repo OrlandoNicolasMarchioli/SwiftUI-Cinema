@@ -57,7 +57,7 @@ class AllMoviesViewModel: ObservableObject{
             fetchNowPlayingMovies()
         }
         
-        let filteredMovies = self.state.moviesNowPlaying.filter{ $0.title.contains(title)}
+        let filteredMovies = self.state.moviesNowPlaying.filter{ $0.title.lowercased().contains(title.lowercased())}
         
         guard !filteredMovies.isEmpty else{
             self.state  = self.state.clone(withNoMoviesFound: true)

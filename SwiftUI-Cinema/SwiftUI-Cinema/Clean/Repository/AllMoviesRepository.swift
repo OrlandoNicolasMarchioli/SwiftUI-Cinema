@@ -15,32 +15,46 @@ protocol AllMoviesRepository{
 
 class MoviesApiFetch: AllMoviesRepository{
     private var moviesApi: MoviesApiProtocol
+    private var moviesCacheStore: MoviesCacheStore
     
-    init(moviesApi: MoviesApiProtocol) {
+    init(moviesApi: MoviesApiProtocol, movieStoreManager: MoviesCacheStore) {
         self.moviesApi = moviesApi
+        self.moviesCacheStore = movieStoreManager
     }
     
     func fetchNowPlayingMovies() -> AnyPublisher<[MovieResult], Error> {
         return Future<[MovieResult], Error>{ promise in
-            self.moviesApi.getAllNowPlayingMovies(){ (response, err) in
-                guard let response = response, err == nil else{
-                    promise(.failure(MovieStateResponseError.failure))
-                    return
+            if(self.moviesCacheStore.hasAllNowPlayingMovies()){
+                promise(.success(self.moviesCacheStore.getMoviesNowPlayingStored()))
+            }
+            else{
+                self.moviesApi.getAllNowPlayingMovies(){ [self] (response, err) in
+                    guard let response = response, err == nil else{
+                        promise(.failure(MovieStateResponseError.failure))
+                        return
+                    }
+                    moviesCacheStore.saveMovies(movies: response.results)
+                    promise(.success(response.results))
                 }
-                promise(.success(response.results))
             }
         }
         .eraseToAnyPublisher()
     }
     
     func fetchMovieByTitle(title: String) -> AnyPublisher<Movie, Error> {
-        return Future<Movie, Error>{ promise in
-            self.moviesApi.getMovieByTitle(title: title){ (response, err) in
-                guard let response = response, err == nil else{
-                    promise(.failure(MovieStateResponseError.failure))
-                    return
+        return Future<Movie, Error>{ [self] promise in
+            if(self.moviesCacheStore.hasTheMovieDetail(movieTitle: title)){
+                promise(.success(moviesCacheStore.getMovieStored(title: title)!))
+            }
+            else{
+                self.moviesApi.getMovieByTitle(title: title){ [self] (response, err) in
+                    guard let response = response, err == nil else{
+                        promise(.failure(MovieStateResponseError.failure))
+                        return
+                    }
+                    moviesCacheStore.saveMovie(movie: response)
+                    promise(.success(response))
                 }
-                promise(.success(response))
             }
         }.eraseToAnyPublisher()
     }
